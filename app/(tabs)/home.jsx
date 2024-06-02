@@ -1,4 +1,11 @@
-import { View, Text, FlatList, Image, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
@@ -8,8 +15,12 @@ import EmptyState from "../../components/EmptyState";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import VideoCard from "../../components/VideoCard";
+import { router } from "expo-router";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -35,7 +46,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Susmita
+                  {user?.username}
                 </Text>
               </View>
 
@@ -49,6 +60,13 @@ const Home = () => {
             </View>
 
             <SearchInput />
+
+            {/* <TouchableOpacity
+              onPress={() => router.push("/sign-in")}
+              className="mt-1.5"
+            >
+              <Text className="text-white text-lg">Login</Text>
+            </TouchableOpacity> */}
 
             <View className="w-full flex-1 pb-8 pt-5">
               <Text className="text-gray-100 text-lg font-pregular mb-3">
