@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ResizeMode, Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 import {
   FlatList,
@@ -7,8 +6,22 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-
 import { icons } from "../constants";
+import { ResizeMode, Video, VideoFullscreenUpdate } from "expo-av";
+import * as ScreenOrientation from "expo-screen-orientation";
+
+const unlockRotation = async ({ fullscreenUpdate }) => {
+  // if the video finished switching from normal to fullscreen we unlock the rotation
+  if (fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_PRESENT) {
+    await ScreenOrientation.unlockAsync();
+  }
+  // else if the video finished switching back to normal we lock the screen in portrait
+  else if (fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT
+    );
+  }
+};
 
 const zoomIn = {
   0: {
@@ -39,33 +52,20 @@ const TrendingItem = ({ activeItem, item }) => {
     >
       {play ? (
         <Video
-          source={{ uri: item.video }}
           className="w-52 h-72 rounded-[33px] mt-3 bg-white/10"
+          source={{ uri: item.video }}
           resizeMode={ResizeMode.CONTAIN}
           useNativeControls
           shouldPlay
-          onPlaybackStatusUpdate={(playbackStatus) => {
-            if (playbackStatus.didJustFinish) {
+          onPlaybackStatusUpdate={(status) => {
+            if (status.error) {
+              console.log(status.error);
+            }
+            if (status.didJustFinish) {
               setPlay(false);
             }
-            if (!playbackStatus.isLoaded) {
-              // Update your UI for the unloaded state
-              console.log("Video not loaded");
-              if (playbackStatus.error) {
-                console.log(
-                  `Encountered a fatal error during playback: ${playbackStatus.error}`
-                );
-                // Send Expo team the error on Slack or the forums so we can help you debug!
-              }
-            } else {
-              // Update your UI for the loaded state
-
-              if (playbackStatus.isPlaying) {
-                // Update your UI for the playing state
-                console.log("Playing Video");
-              }
-            }
           }}
+          onFullscreenUpdate={unlockRotation}
         />
       ) : (
         <TouchableOpacity

@@ -4,9 +4,8 @@ import { icons } from "../constants";
 import { ResizeMode, Video, VideoFullscreenUpdate } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 
-//we recieve the fullscreen object from the video we're focusing on
 const unlockRotation = async ({ fullscreenUpdate }) => {
-  // if the video finished switching from normal to fullscreen we unlocck the rotation
+  // if the video finished switching from normal to fullscreen we unlock the rotation
   if (fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_PRESENT) {
     await ScreenOrientation.unlockAsync();
   }
@@ -66,14 +65,14 @@ const VideoCard = ({
           useNativeControls
           shouldPlay
           onPlaybackStatusUpdate={(status) => {
-            if (!status) {
-              console.log("No Playback Status");
+            if (status.error) {
+              console.log(status.error);
             }
             if (status.didJustFinish) {
               setPlay(false);
             }
           }}
-          onFullscreenUpdate={unlockRotation} //<----- This is the new line of code
+          onFullscreenUpdate={unlockRotation}
         />
       ) : (
         <TouchableOpacity
