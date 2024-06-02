@@ -6,8 +6,7 @@ import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 import { images } from "../../constants";
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import CustomButton from "../../components/CustomButton";
-import FormField from "../../components/FormField";
+import { CustomButton, FormField } from "../../components";
 
 const SignIn = () => {
   const { setUser, setIsLogged } = useGlobalContext();

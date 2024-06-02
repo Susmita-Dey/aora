@@ -3,11 +3,9 @@ import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "../../lib/useAppwrite";
 import { getUserPosts, signOut } from "../../lib/appwrite";
-import EmptyState from "../../components/EmptyState";
-import VideoCard from "../../components/VideoCard";
+import { EmptyState, VideoCard, InfoBox } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { icons } from "../../constants";
-import InfoBox from "../../components/InfoBox";
 import { router } from "expo-router";
 
 const Profile = () => {

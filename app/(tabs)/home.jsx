@@ -9,12 +9,9 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
-import SearchInput from "../../components/SearchInput";
-import Trending from "../../components/Trending";
-import EmptyState from "../../components/EmptyState";
+import { SearchInput, Trending, EmptyState, VideoCard } from "../../components";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
-import VideoCard from "../../components/VideoCard";
 import { router } from "expo-router";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
