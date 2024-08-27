@@ -29,6 +29,13 @@ const SignIn = () => {
       setUser(result);
       setIsLogged(true);
 
+      console.log(result);
+
+      if (result === null) {
+        router.replace("/sign-in");
+        setIsLogged(false);
+      }
+
       Alert.alert("Success", "User signed in successfully");
       router.replace("/home");
     } catch (error) {
